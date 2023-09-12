@@ -1,7 +1,9 @@
+import Layout from "../components/layout";
+
 export default function HomePage() {
   return (
-    <div>
-      <h1>home</h1>
-    </div>
+    <Layout>
+      <h1>Perica</h1>
+    </Layout>
   );
 }

@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Layout from "../../components/layout";
 
 export default function EventPage() {
   const router = useRouter();
@@ -6,8 +7,8 @@ export default function EventPage() {
   console.log(router);
 
   return (
-    <div>
+    <Layout>
       <h1>My event</h1>
-    </div>
+    </Layout>
   );
 }
