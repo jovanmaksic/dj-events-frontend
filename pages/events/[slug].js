@@ -6,7 +6,7 @@ import { API_URL } from "@/config/index";
 import styles from "@/styles/Event.module.css";
 
 export default function EventPage({ evt }) {
-  console.log(evt);
+  console.log(evt.image.data.attributes.name);
 
   const deleteEvent = (e) => {
     console.log("delete");
@@ -30,7 +30,12 @@ export default function EventPage({ evt }) {
         <h1>{evt.name}</h1>
         {evt.image && (
           <div className={styles.image}>
-            <Image alt={evt.name} src={evt.image} width={960} height={640} />
+            <Image
+              alt={evt.image.data.attributes.name}
+              src={evt.image.data.attributes.formats.medium.url}
+              width={960}
+              height={640}
+            />
           </div>
         )}
 
@@ -69,7 +74,10 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { slug } }) {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_BASE_URL + "/api/events?filters[slug][$eq]=" + slug
+    process.env.NEXT_PUBLIC_BASE_URL +
+      "/api/events?filters[slug][$eq]=" +
+      slug +
+      "&[populate]=image"
   );
   const event = await res.json();
   console.log(event);
