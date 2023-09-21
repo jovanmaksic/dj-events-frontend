@@ -6,6 +6,8 @@ import { API_URL } from "@/config/index";
 import styles from "@/styles/Event.module.css";
 
 export default function EventPage({ evt }) {
+  console.log(evt);
+
   const deleteEvent = (e) => {
     console.log("delete");
   };
@@ -48,13 +50,17 @@ export default function EventPage({ evt }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL +
+      "/api/events?populate=image&sort=date:ASC"
+  );
+  const data = await res.json();
+
+  const events = data.data;
 
   const paths = events.map((evt) => ({
-    params: { slug: evt.slug },
+    params: { slug: evt.attributes.slug },
   }));
-
   return {
     paths,
     fallback: true,
@@ -62,24 +68,16 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(`${API_URL}/api/events/${slug}`);
-  const events = await res.json();
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + "/api/events?filters[slug][$eq]=" + slug
+  );
+  const event = await res.json();
+  console.log(event);
 
   return {
     props: {
-      evt: events[0],
+      evt: event.data[0].attributes,
     },
     revalidate: 1,
   };
 }
-
-// export async function getServerSideProps({ query: { slug } }) {
-//   const res = await fetch(`${API_URL}/api/events/${slug}`);
-//   const events = await res.json();
-
-//   return {
-//     props: {
-//       evt: events[0],
-//     },
-//   };
-// }

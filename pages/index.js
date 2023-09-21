@@ -1,7 +1,6 @@
 import Layout from "@/components/Layout";
 import Link from "next/link";
 import EventItem from "@/components/EventItem";
-import { API_URL } from "@/config/index";
 
 export default function HomePage({ events }) {
   return (
@@ -9,7 +8,7 @@ export default function HomePage({ events }) {
       <h1>Upcoming Events</h1>
       {events.length === 0 && <h3>No events!</h3>}
       {events.map((evt) => (
-        <EventItem key={evt.id} evt={evt} />
+        <EventItem key={evt.id} evt={evt.attributes} />
       ))}
       {events.length > 0 && (
         <center>
@@ -23,13 +22,13 @@ export default function HomePage({ events }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
-  console.log(res);
-
-  const events = await res.json();
-
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL +
+      "/api/events?populate=image&sort=date:ASC"
+  );
+  const { data } = await res.json();
   return {
-    props: { events: events.slice(0, 3) },
+    props: { events: data },
     revalidate: 1,
   };
 }
