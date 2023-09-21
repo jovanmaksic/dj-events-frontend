@@ -24,7 +24,7 @@ export default function HomePage({ events }) {
 export async function getStaticProps() {
   const res = await fetch(
     process.env.NEXT_PUBLIC_BASE_URL +
-      "/api/events?populate=image&sort=date:ASC"
+      "/api/events?populate=image&sort=date:ASC&pagination[pageSize]=3"
   );
   const { data } = await res.json();
   return {

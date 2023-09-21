@@ -16,8 +16,7 @@ export default function EventsPage({ events }) {
 
 export async function getStaticProps() {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_BASE_URL +
-      "/api/events?populate=image&sort=date:ASC"
+    process.env.NEXT_PUBLIC_BASE_URL + "/api/events?populate=image"
   );
   const { data } = await res.json();
   return {
