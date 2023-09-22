@@ -3,12 +3,28 @@ import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/Layout";
 import styles from "@/styles/Event.module.css";
+import { useRouter } from "next/router";
 
 export default function EventPage({ evt }) {
+  const router = useRouter();
   console.log("zika", evt.id);
 
-  const deleteEvent = (e) => {
-    console.log("delete");
+  const deleteEvent = async (e) => {
+    if (confirm("Are You sure?")) {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_BASE_URL + "/api/events/" + evt.id,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+      } else {
+        router.push("/events");
+      }
+    }
   };
 
   console.log(evt);
