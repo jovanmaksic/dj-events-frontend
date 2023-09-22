@@ -6,8 +6,6 @@ import { API_URL } from "@/config/index";
 import styles from "@/styles/Event.module.css";
 
 export default function EventPage({ evt }) {
-  console.log(evt.image.data.attributes.name);
-
   const deleteEvent = (e) => {
     console.log("delete");
   };
@@ -80,8 +78,6 @@ export async function getStaticProps({ params: { slug } }) {
       "&[populate]=image"
   );
   const event = await res.json();
-  console.log(event);
-
   return {
     props: {
       evt: event.data[0].attributes,
