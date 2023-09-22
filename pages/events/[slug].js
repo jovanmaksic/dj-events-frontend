@@ -9,6 +9,9 @@ export default function EventPage({ evt }) {
   const deleteEvent = (e) => {
     console.log("delete");
   };
+
+  console.log(evt);
+
   return (
     <Layout>
       <div className={styles.event}>
@@ -29,8 +32,16 @@ export default function EventPage({ evt }) {
         {evt.image && (
           <div className={styles.image}>
             <Image
-              alt={evt.image.data.attributes.name}
-              src={evt.image.data.attributes.formats.medium.url}
+              alt={
+                evt.image.data !== null
+                  ? evt.image.data.attributes.name
+                  : "none"
+              }
+              src={
+                evt.image.data !== null
+                  ? evt.image.data.attributes.formats.medium.url
+                  : "/images/event-default.png"
+              }
               width={960}
               height={640}
             />
