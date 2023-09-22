@@ -1,4 +1,3 @@
-import qs from "qs";
 import Layout from "@/components/Layout";
 import Link from "next/link";
 import EventItem from "@/components/EventItem";

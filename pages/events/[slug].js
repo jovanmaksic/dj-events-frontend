@@ -2,10 +2,11 @@ import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/Layout";
-import { API_URL } from "@/config/index";
 import styles from "@/styles/Event.module.css";
 
 export default function EventPage({ evt }) {
+  console.log("zika", evt.id);
+
   const deleteEvent = (e) => {
     console.log("delete");
   };
@@ -17,7 +18,7 @@ export default function EventPage({ evt }) {
       <div className={styles.event}>
         <div className={styles.controls}>
           <Link className={styles.back} href={`/events/edit/${evt.id}`}>
-            {"<"} Edit event
+            <FaPencilAlt /> Edit event
           </Link>
           <a href="#" className={styles.delete} onClick={deleteEvent}>
             <FaTimes />
@@ -26,20 +27,20 @@ export default function EventPage({ evt }) {
         </div>
 
         <span>
-          {evt.date} at {evt.time}
+          {evt.attributes.date} at {evt.attributes.time}
         </span>
-        <h1>{evt.name}</h1>
-        {evt.image && (
+        <h1>{evt.attributes.name}</h1>
+        {evt.attributes.image && (
           <div className={styles.image}>
             <Image
               alt={
-                evt.image.data !== null
-                  ? evt.image.data.attributes.name
+                evt.attributes.image.data !== null
+                  ? evt.attributes.image.data.attributes.name
                   : "none"
               }
               src={
-                evt.image.data !== null
-                  ? evt.image.data.attributes.formats.medium.url
+                evt.attributes.image.data !== null
+                  ? evt.attributes.image.data.attributes.formats.medium.url
                   : "/images/event-default.png"
               }
               width={960}
@@ -49,11 +50,11 @@ export default function EventPage({ evt }) {
         )}
 
         <h3>Performers:</h3>
-        <p>{evt.performers}</p>
+        <p>{evt.attributes.performers}</p>
         <h3>Description:</h3>
-        <p>{evt.description}</p>
+        <p>{evt.attributes.description}</p>
         <h3>Venue: {evt.venue}</h3>
-        <p>{evt.address}</p>
+        <p>{evt.attributes.address}</p>
 
         <Link href="/events" className={styles.back}>
           {"<"} Go Back
@@ -89,9 +90,11 @@ export async function getStaticProps({ params: { slug } }) {
       "&[populate]=image"
   );
   const event = await res.json();
+  console.log("marko", event.data[0]);
+
   return {
     props: {
-      evt: event.data[0].attributes,
+      evt: event.data[0],
     },
     revalidate: 1,
   };
